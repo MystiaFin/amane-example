@@ -1,3 +1,5 @@
+mod workspaces;
+
 use amane::{
     Center, Color, Full, Layer, LayerWindow, Monitor, Padding, Parent, Rectangle, Row,
     SpaceBetween, Text, Vertical, Zone, children,
@@ -5,7 +7,7 @@ use amane::{
 
 const HEIGHT: f32 = 32.0;
 
-pub fn view(_monitor: &Monitor) -> LayerWindow {
+pub fn view(monitor: &Monitor) -> LayerWindow {
     let padding = Padding {
         top: 0.0,
         right: 8.0,
@@ -14,7 +16,7 @@ pub fn view(_monitor: &Monitor) -> LayerWindow {
     };
 
     let sections = Row::new(children![
-        Text::new("left").color(Color::WHITE),
+        workspaces::view(monitor),
         Text::new("center").color(Color::WHITE),
         Text::new("right").color(Color::WHITE),
     ])
