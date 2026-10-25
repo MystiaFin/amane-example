@@ -1,3 +1,4 @@
+mod clock;
 mod workspaces;
 
 use amane::{
@@ -17,7 +18,7 @@ pub fn view(monitor: &Monitor) -> LayerWindow {
 
     let sections = Row::new(children![
         workspaces::view(monitor),
-        Text::new("center").color(Color::WHITE),
+        clock::view(),
         Text::new("right").color(Color::WHITE),
     ])
     .width(Parent)

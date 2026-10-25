@@ -1,4 +1,5 @@
 mod bar;
+mod clock;
 
 use amane::App;
 
