@@ -1,0 +1,4 @@
+# amane writes these with paths from your own machine
+Cargo.toml
+Cargo.lock
+target/
