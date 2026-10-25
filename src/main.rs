@@ -1,20 +1,7 @@
-use amane::{App, Color, Full, Layer, LayerWindow, Parent, Rectangle, Text, Vertical};
+mod bar;
+
+use amane::App;
 
 fn main() {
-    App::new().window(view).run();
-}
-
-fn view() -> LayerWindow {
-    LayerWindow::new()
-        .width(Full)
-        .height(30.0)
-        .anchor_vertical(Vertical::Top)
-        .layer(Layer::Top)
-        .child(
-            Rectangle::new()
-                .width(Parent)
-                .height(Parent)
-                .fill(Color::BLUE)
-                .child(Text::new("hello world").size(20.0).color(Color::WHITE)),
-        )
+    App::new().window_per_monitor(bar::view).run();
 }
