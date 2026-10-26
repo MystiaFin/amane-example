@@ -3,8 +3,8 @@ mod entry;
 use std::time::Duration;
 
 use amane::{
-    Apps, Color, Column, DesktopApp, Keyboard, Layer, LayerWindow, Parent, Rectangle, ScrollArea,
-    Service, TextInput, Widget, children,
+    Apps, Color, Column, DesktopApp, Key, Keyboard, Layer, LayerWindow, Parent, Rectangle,
+    ScrollArea, Service, TextInput, Widget, children,
 };
 
 pub struct Launcher {
@@ -34,7 +34,8 @@ pub fn view() -> LayerWindow {
         .size(16.0)
         .color(Color::WHITE)
         .focused()
-        .on_change(|text| Launcher::write().query = text);
+        .on_change(|text| Launcher::write().query = text)
+        .on_submit(|_| launch_first_match());
 
     let search_box = Rectangle::new()
         .width(Parent)
@@ -59,6 +60,7 @@ pub fn view() -> LayerWindow {
         .keyboard(Keyboard::Exclusive)
         .namespace("launcher")
         .visible(launcher.open)
+        .on_key(key_pressed)
         .child(
             Rectangle::new()
                 .width(Parent)
@@ -89,6 +91,27 @@ pub fn close() {
 
     launcher.open = false;
     launcher.query.clear();
+}
+
+// the search box keeps letters and enter, escape reaches the window
+fn key_pressed(key: Key) {
+    if key == Key::Escape {
+        close();
+    }
+}
+
+fn launch_first_match() {
+    let query = Launcher::read().query.clone();
+
+    let apps = Apps::read();
+
+    let Some(app) = apps.list().iter().find(|app| matches(app, &query)) else {
+        return;
+    };
+
+    app.launch();
+
+    close();
 }
 
 fn entries(query: &str) -> Vec<Box<dyn Widget>> {

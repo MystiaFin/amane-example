@@ -1,3 +1,4 @@
+mod apps;
 mod clock;
 mod status;
 mod workspaces;
@@ -17,8 +18,12 @@ pub fn view(monitor: &Monitor) -> LayerWindow {
         left: 8.0,
     };
 
+    let left = Row::new(children![apps::view(), workspaces::view(monitor)])
+        .gap(12.0)
+        .align(Center);
+
     let sections = Row::new(children![
-        workspaces::view(monitor),
+        left,
         clock::view(),
         status::view(),
     ])
