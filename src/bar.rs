@@ -1,9 +1,10 @@
 mod clock;
+mod status;
 mod workspaces;
 
 use amane::{
-    Center, Color, Full, Layer, LayerWindow, Monitor, Padding, Parent, Rectangle, Row,
-    SpaceBetween, Text, Vertical, Zone, children,
+    Center, Full, Layer, LayerWindow, Monitor, Padding, Parent, Rectangle, Row, SpaceBetween,
+    Vertical, Zone, children,
 };
 
 const HEIGHT: f32 = 32.0;
@@ -19,7 +20,7 @@ pub fn view(monitor: &Monitor) -> LayerWindow {
     let sections = Row::new(children![
         workspaces::view(monitor),
         clock::view(),
-        Text::new("right").color(Color::WHITE),
+        status::view(),
     ])
     .width(Parent)
     .height(Parent)
