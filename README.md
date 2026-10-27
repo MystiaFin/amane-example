@@ -32,7 +32,7 @@ Amane writes its own `Cargo.toml` here on the first build, with paths from your 
 
 - Stop your notification daemon (mako, dunst, swaync), or the popups stay empty. Only one program can show notifications at a time.
 - Workspaces work on niri, Hyprland and Sway.
-- The wallpaper is `wallpaper-example/image.jpg`, found from the folder you start `amane` in. Run `amane dev` from this folder, or change `WALLPAPER` in `src/wallpaper.rs` to a full path. Without the image you get a plain dark background.
+- The wallpaper is `src/wallpaper-example/wallpaper_2.jpg`. To use your own, change `WALLPAPER` in `src/wallpaper.rs`, either to a path next to that file or to a full path. If the image is missing you get a plain dark background.
 - Read [Testing safely](https://mystiafin.github.io/amane/lock_screen.html#testing-safely) before trying the lock screen. A broken lock screen can lock you out of your session.
 
 ## Keybinds
