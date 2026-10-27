@@ -5,8 +5,9 @@ A small but complete desktop shell built with [Amane](https://github.com/MystiaF
 It has:
 
 - a wallpaper on every monitor
-- a bar on every monitor, with an apps button, workspaces, a clock, volume, network and battery
+- a bar on every monitor, with an apps button, workspaces, a clock, volume, network, bluetooth, notifications and battery
 - an app launcher with search
+- small panels for wifi, bluetooth and notifications
 - notification popups
 - a lock screen
 
@@ -61,6 +62,10 @@ bindsym $mod+Alt+l exec amane ipc call lock
 
 In the launcher, type to search, press Enter to open the first match, or press Escape to close it. In the bar, click the volume to mute it and scroll over it to change it.
 
+Click the network, `bt` or `notifs` label in the bar to open its panel, and click it again (or press Escape) to close it. In the wifi panel, click a network to join or leave it. New secured networks ask for their password first. In the bluetooth panel, click a device to pair, connect or disconnect it. Devices that need a pairing code have to be paired once with `bluetoothctl`.
+
+Wifi needs NetworkManager, and bluetooth needs BlueZ.
+
 ## Where things are
 
 ```
@@ -72,7 +77,12 @@ src/
 │   ├── apps.rs        button that opens the launcher
 │   ├── workspaces.rs  one button per workspace on this monitor
 │   ├── clock.rs       date and time
-│   └── status.rs      volume, network, battery
+│   └── status.rs      volume, network, bluetooth, notifications, battery
+├── panel.rs           panel window, which panel is open, shared header and list item
+├── panel/
+│   ├── wifi.rs        networks and the password box
+│   ├── bluetooth.rs   devices
+│   └── notifications.rs  every notification, and clear all
 ├── launcher.rs        launcher window, its state and search
 ├── launcher/
 │   └── entry.rs       one app in the list
@@ -81,4 +91,4 @@ src/
 └── wallpaper.rs       an image behind everything
 ```
 
-A good order to read them in: `main.rs`, `bar.rs`, then the files in `bar/`, then `launcher.rs`, `notifications.rs`, `lock_screen.rs` and `wallpaper.rs`.
+A good order to read them in: `main.rs`, `bar.rs`, then the files in `bar/`, then `launcher.rs`, `panel.rs` and the files in `panel/`, `notifications.rs`, `lock_screen.rs` and `wallpaper.rs`.
