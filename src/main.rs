@@ -1,6 +1,7 @@
 mod bar;
 mod clock;
 mod launcher;
+mod notifications;
 
 use amane::App;
 
@@ -9,6 +10,7 @@ fn main() {
         .ipc("launcher", toggle_launcher)
         .window_per_monitor(bar::view)
         .window(launcher::view)
+        .window(notifications::view)
         .run();
 }
 
