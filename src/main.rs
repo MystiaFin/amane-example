@@ -3,6 +3,7 @@ mod clock;
 mod launcher;
 mod lock_screen;
 mod notifications;
+mod wallpaper;
 
 use amane::{App, Lock};
 
@@ -10,6 +11,7 @@ fn main() {
     App::new()
         .ipc("launcher", toggle_launcher)
         .ipc("lock", lock)
+        .window_per_monitor(wallpaper::view)
         .window_per_monitor(bar::view)
         .window(launcher::view)
         .window(notifications::view)

@@ -4,6 +4,7 @@ A small but complete desktop shell built with [Amane](https://github.com/MystiaF
 
 It has:
 
+- a wallpaper on every monitor
 - a bar on every monitor, with an apps button, workspaces, a clock, volume, network and battery
 - an app launcher with search
 - notification popups
@@ -28,6 +29,7 @@ Amane writes its own `Cargo.toml` here on the first build, with paths from your 
 
 - Stop your notification daemon (mako, dunst, swaync), or the popups stay empty. Only one program can show notifications at a time.
 - Workspaces work on niri, Hyprland and Sway.
+- The wallpaper is `wallpaper-example/image.jpg`, found from the folder you start `amane` in. Run `amane dev` from this folder, or change `WALLPAPER` in `src/wallpaper.rs` to a full path. Without the image you get a plain dark background.
 - Read [Testing safely](https://mystiafin.github.io/amane/lock_screen.html#testing-safely) before trying the lock screen. A broken lock screen can lock you out of your session.
 
 ## Keybinds
@@ -75,7 +77,8 @@ src/
 ├── launcher/
 │   └── entry.rs       one app in the list
 ├── notifications.rs   popups in the top right corner
-└── lock_screen.rs     clock and password box
+├── lock_screen.rs     clock and password box
+└── wallpaper.rs       an image behind everything
 ```
 
-A good order to read them in: `main.rs`, `bar.rs`, then the files in `bar/`, then `launcher.rs`, `notifications.rs` and `lock_screen.rs`.
+A good order to read them in: `main.rs`, `bar.rs`, then the files in `bar/`, then `launcher.rs`, `notifications.rs`, `lock_screen.rs` and `wallpaper.rs`.
