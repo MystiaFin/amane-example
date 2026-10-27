@@ -3,11 +3,13 @@ use amane::{
     Scroll, Service, Text, Widget,
 };
 
+use crate::panel::{self, Panel};
+
 pub fn view() -> Row {
     let mut items: Vec<Box<dyn Widget>> = Vec::new();
 
     items.push(Box::new(volume()));
-    items.push(Box::new(network()));
+    items.push(Box::new(wifi()));
 
     // desktops have no battery, so there's nothing to show
     if Battery::read().present() {
@@ -27,14 +29,10 @@ fn volume() -> Rectangle {
         format!("vol {}%", audio.volume())
     };
 
-    Rectangle::new()
-        .width(72.0)
-        .height(Parent)
+    button(label, 72.0)
         .cursor(Pointer)
-        .align_child(End, Center)
         .on_click(volume_clicked)
         .on_scroll(volume_scrolled)
-        .child(Text::new(label).size(14.0).color(Color::WHITE))
 }
 
 fn volume_clicked(_: Button) {
@@ -52,7 +50,7 @@ fn volume_scrolled(scroll: Scroll) {
     Audio::set_volume(changed as u8);
 }
 
-fn network() -> Text {
+fn wifi() -> Rectangle {
     let network = Network::read();
 
     let label = match network.link() {
@@ -62,10 +60,12 @@ fn network() -> Text {
         Link::Offline => String::from("offline"),
     };
 
-    Text::new(label).size(14.0).color(Color::WHITE)
+    button(label, 140.0)
+        .cursor(Pointer)
+        .on_click(|_| panel::toggle(Panel::Wifi))
 }
 
-fn battery() -> Text {
+fn battery() -> Rectangle {
     let battery = Battery::read();
 
     let label = if battery.charging() {
@@ -74,5 +74,16 @@ fn battery() -> Text {
         format!("bat {}%", battery.percent())
     };
 
-    Text::new(label).size(14.0).color(Color::WHITE)
+    button(label, 72.0)
+}
+
+// fixed widths, so the bar doesn't jump around when a label changes
+fn button(label: String, width: f32) -> Rectangle {
+    let text = Text::new(label).size(14.0).color(Color::WHITE).elide();
+
+    Rectangle::new()
+        .width(width)
+        .height(Parent)
+        .align_child(End, Center)
+        .child(text)
 }
