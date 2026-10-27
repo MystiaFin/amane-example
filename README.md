@@ -5,8 +5,8 @@ A small but complete desktop shell built with [Amane](https://github.com/MystiaF
 It has:
 
 - a wallpaper on every monitor
-- a bar on every monitor, with an apps button, workspaces, a clock, volume, network, bluetooth, notifications and battery
-- an app launcher with search
+- a bar on every monitor, with a Linux menu button, workspaces, a clock, volume, network, bluetooth, notifications and battery
+- a start menu: sleep, lock, log out and shut down on the left, app search on the right
 - small panels for wifi, bluetooth and notifications
 - notification popups
 - a lock screen
@@ -32,12 +32,12 @@ Amane writes its own `Cargo.toml` here on the first build, with paths from your 
 
 - Stop your notification daemon (mako, dunst, swaync), or the popups stay empty. Only one program can show notifications at a time.
 - Workspaces work on niri, Hyprland and Sway.
-- The wallpaper is `src/wallpaper-example/wallpaper_2.jpg`. To use your own, change `WALLPAPER` in `src/wallpaper.rs`, either to a path next to that file or to a full path. If the image is missing you get a plain dark background.
+- The wallpaper is `src/wallpaper-example/wallpaper_2.jpg`. To use your own, change `WALLPAPER` in `src/wallpaper.rs`, either to a path inside this project or to a full path. If the image is missing you get a plain dark background.
 - Read [Testing safely](https://mystiafin.github.io/amane/lock_screen.html#testing-safely) before trying the lock screen. A broken lock screen can lock you out of your session.
 
 ## Keybinds
 
-The launcher and the lock screen open over IPC, so bind them in your compositor.
+The start menu and the lock screen also open over IPC, so you can bind them in your compositor.
 
 niri:
 
@@ -62,7 +62,7 @@ bindsym $mod+d exec amane ipc call launcher
 bindsym $mod+Alt+l exec amane ipc call lock
 ```
 
-In the launcher, type to search, press Enter to open the first match, or press Escape to close it. In the bar, click the volume to mute it and scroll over it to change it.
+Click the Linux button in the top left to open the start menu. Type to search, press Enter to open the first match, or press Escape to close it. The buttons on the left use `systemctl` for sleep and shut down, and `loginctl` to log out. In the bar, click the volume to mute it and scroll over it to change it.
 
 Click the network, `bt` or `notifs` label in the bar to open its panel, and click it again (or press Escape) to close it. In the wifi panel, click a network to join or leave it. New secured networks ask for their password first. In the bluetooth panel, click a device to pair, connect or disconnect it. Devices that need a pairing code have to be paired once with `bluetoothctl`.
 
@@ -73,10 +73,11 @@ Wifi needs NetworkManager, and bluetooth needs BlueZ.
 ```
 src/
 ├── main.rs            puts the windows together, and the ipc handlers
+├── files.rs           finds files inside this project, wherever the shell was started
 ├── clock.rs           Clock service, shared by the bar and the lock screen
 ├── bar.rs             the bar window: left, center and right
 ├── bar/
-│   ├── apps.rs        button that opens the launcher
+│   ├── apps.rs        Linux button that opens the start menu
 │   ├── workspaces.rs  one button per workspace on this monitor
 │   ├── clock.rs       date and time
 │   └── status.rs      volume, network, bluetooth, notifications, battery
@@ -85,12 +86,19 @@ src/
 │   ├── wifi.rs        networks and the password box
 │   ├── bluetooth.rs   devices
 │   └── notifications.rs  every notification, and clear all
-├── launcher.rs        launcher window, its state and search
+├── launcher.rs        start menu window, its state and search
 ├── launcher/
+│   ├── power.rs       sleep, lock, log out, shut down
 │   └── entry.rs       one app in the list
 ├── notifications.rs   popups in the top right corner
 ├── lock_screen.rs     clock and password box
 └── wallpaper.rs       an image behind everything
+assets/
+└── linux.svg          the menu button's icon
 ```
 
 A good order to read them in: `main.rs`, `bar.rs`, then the files in `bar/`, then `launcher.rs`, `panel.rs` and the files in `panel/`, `notifications.rs`, `lock_screen.rs` and `wallpaper.rs`.
+
+## Credits
+
+The Linux icon is from [Simple Icons](https://simpleicons.org/) (CC0).

@@ -1,10 +1,11 @@
 mod entry;
+mod power;
 
 use std::time::Duration;
 
 use amane::{
-    Apps, Color, Column, DesktopApp, Key, Keyboard, Layer, LayerWindow, Parent, Rectangle,
-    ScrollArea, Service, TextInput, Widget, children,
+    Apps, Color, Column, DesktopApp, Horizontal, Key, Keyboard, Layer, LayerWindow, Margin, Parent,
+    Rectangle, Row, ScrollArea, Service, TextInput, Vertical, Widget, children,
 };
 
 pub struct Launcher {
@@ -26,10 +27,48 @@ impl Service for Launcher {
     }
 }
 
+// power buttons on the left, app search on the right
 pub fn view() -> LayerWindow {
     let launcher = Launcher::read();
 
-    let search = TextInput::new("launcher")
+    let menu = Row::new(children![power::view(), search(&launcher.query)])
+        .width(Parent)
+        .height(Parent)
+        .gap(12.0);
+
+    // under the apps button in the top left corner
+    let margin = Margin {
+        top: 8,
+        right: 0,
+        bottom: 0,
+        left: 8,
+    };
+
+    // exclusive, so typing goes to the search box and not the window behind
+    LayerWindow::new()
+        .width(560.0)
+        .height(480.0)
+        .anchor_vertical(Vertical::Top)
+        .anchor_horizontal(Horizontal::Left)
+        .margin(margin)
+        .layer(Layer::Overlay)
+        .keyboard(Keyboard::Exclusive)
+        .namespace("launcher")
+        .visible(launcher.open)
+        .on_key(key_pressed)
+        .child(
+            Rectangle::new()
+                .width(Parent)
+                .height(Parent)
+                .fill("#1e1e2e")
+                .radius(12.0)
+                .padding(12.0)
+                .child(menu),
+        )
+}
+
+fn search(query: &str) -> Column {
+    let input = TextInput::new("launcher")
         .placeholder("search apps")
         .size(16.0)
         .color(Color::from("#cdd6f4"))
@@ -43,33 +82,16 @@ pub fn view() -> LayerWindow {
         .fill("#313244")
         .radius(8.0)
         .padding(10.0)
-        .child(search);
+        .child(input);
 
-    let list = ScrollArea::new("launcher", Column::new(entries(&launcher.query)).gap(2.0));
+    let apps = Column::new(entries(query)).width(Parent).gap(2.0);
 
-    let content = Column::new(children![search_box, list])
+    let list = ScrollArea::new("launcher", apps);
+
+    Column::new(children![search_box, list])
         .width(Parent)
         .height(Parent)
-        .gap(12.0);
-
-    // exclusive, so typing goes to the search box and not the window behind
-    LayerWindow::new()
-        .width(420.0)
-        .height(460.0)
-        .layer(Layer::Overlay)
-        .keyboard(Keyboard::Exclusive)
-        .namespace("launcher")
-        .visible(launcher.open)
-        .on_key(key_pressed)
-        .child(
-            Rectangle::new()
-                .width(Parent)
-                .height(Parent)
-                .fill("#1e1e2e")
-                .radius(12.0)
-                .padding(12.0)
-                .child(content),
-        )
+        .gap(12.0)
 }
 
 pub fn toggle() {

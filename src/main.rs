@@ -1,5 +1,6 @@
 mod bar;
 mod clock;
+mod files;
 mod launcher;
 mod lock_screen;
 mod notifications;
