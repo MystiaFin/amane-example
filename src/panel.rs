@@ -1,15 +1,18 @@
+mod bluetooth;
 mod wifi;
 
 use std::time::Duration;
 
 use amane::{
-    Button, Center, Color, Column, Horizontal, Key, Keyboard, Layer, LayerWindow, Margin, Network,
-    Parent, Pointer, Rectangle, Row, Service, SpaceBetween, Text, Vertical, children,
+    Bluetooth, Button, Center, Color, Column, Horizontal, Key, Keyboard, Layer, LayerWindow,
+    Margin, Network, Parent, Pointer, Rectangle, Row, Service, SpaceBetween, Text, Vertical,
+    children,
 };
 
 #[derive(Clone, Copy, PartialEq)]
 pub enum Panel {
     Wifi,
+    Bluetooth,
 }
 
 // which panel is open, only one at a time
@@ -33,6 +36,7 @@ pub fn view() -> LayerWindow {
 
     let content = match panels.open {
         Some(Panel::Wifi) => wifi::view(),
+        Some(Panel::Bluetooth) => bluetooth::view(),
         None => Column::new(Vec::new()),
     };
 
@@ -67,27 +71,37 @@ pub fn view() -> LayerWindow {
         )
 }
 
-// clicking the same bar button again closes its panel
 pub fn toggle(panel: Panel) {
     let open = Panels::read().open;
 
-    if open == Some(panel) {
-        Panels::write().open = None;
+    close();
 
+    // clicking the same bar button again only closes its panel
+    if open == Some(panel) {
         return;
     }
 
-    // wifi networks show up a few seconds after a scan
-    if panel == Panel::Wifi {
-        Network::scan();
+    // new networks and devices show up a few seconds after a scan starts
+    match panel {
+        Panel::Wifi => Network::scan(),
+        Panel::Bluetooth => Bluetooth::start_scan(),
     }
 
     Panels::write().open = Some(panel);
 }
 
+pub fn close() {
+    let open = Panels::write().open.take();
+
+    // a bluetooth scan keeps going until it's stopped, so it only runs while the list is shown
+    if open == Some(Panel::Bluetooth) {
+        Bluetooth::stop_scan();
+    }
+}
+
 fn key_pressed(key: Key) {
     if key == Key::Escape {
-        Panels::write().open = None;
+        close();
     }
 }
 

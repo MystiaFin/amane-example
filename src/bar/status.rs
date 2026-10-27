@@ -1,6 +1,6 @@
 use amane::{
-    Audio, Battery, Button, Center, Color, End, Link, Network, Parent, Pointer, Rectangle, Row,
-    Scroll, Service, Text, Widget,
+    Audio, Battery, Bluetooth, Button, Center, Color, End, Link, Network, Parent, Pointer,
+    Rectangle, Row, Scroll, Service, Text, Widget,
 };
 
 use crate::panel::{self, Panel};
@@ -10,6 +10,7 @@ pub fn view() -> Row {
 
     items.push(Box::new(volume()));
     items.push(Box::new(wifi()));
+    items.push(Box::new(bluetooth()));
 
     // desktops have no battery, so there's nothing to show
     if Battery::read().present() {
@@ -63,6 +64,18 @@ fn wifi() -> Rectangle {
     button(label, 140.0)
         .cursor(Pointer)
         .on_click(|_| panel::toggle(Panel::Wifi))
+}
+
+fn bluetooth() -> Rectangle {
+    let label = if Bluetooth::read().powered() {
+        "bt on"
+    } else {
+        "bt off"
+    };
+
+    button(String::from(label), 56.0)
+        .cursor(Pointer)
+        .on_click(|_| panel::toggle(Panel::Bluetooth))
 }
 
 fn battery() -> Rectangle {
