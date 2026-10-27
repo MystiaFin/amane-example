@@ -1,16 +1,12 @@
 use amane::{
-    Audio, Battery, Bluetooth, Button, Center, Color, End, Link, Network, Parent, Pointer,
-    Rectangle, Row, Scroll, Service, Text, Widget,
+    Audio, Battery, Bluetooth, Button, Center, Color, End, Link, Network, Notifications, Parent,
+    Pointer, Rectangle, Row, Scroll, Service, Text, children,
 };
 
 use crate::panel::{self, Panel};
 
 pub fn view() -> Row {
-    let mut items: Vec<Box<dyn Widget>> = Vec::new();
-
-    items.push(Box::new(volume()));
-    items.push(Box::new(wifi()));
-    items.push(Box::new(bluetooth()));
+    let mut items = children![volume(), wifi(), bluetooth(), notifications()];
 
     // desktops have no battery, so there's nothing to show
     if Battery::read().present() {
@@ -76,6 +72,14 @@ fn bluetooth() -> Rectangle {
     button(String::from(label), 56.0)
         .cursor(Pointer)
         .on_click(|_| panel::toggle(Panel::Bluetooth))
+}
+
+fn notifications() -> Rectangle {
+    let count = Notifications::read().list().len();
+
+    button(format!("notifs {count}"), 64.0)
+        .cursor(Pointer)
+        .on_click(|_| panel::toggle(Panel::Notifications))
 }
 
 fn battery() -> Rectangle {

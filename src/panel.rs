@@ -1,4 +1,5 @@
 mod bluetooth;
+mod notifications;
 mod wifi;
 
 use std::time::Duration;
@@ -13,6 +14,7 @@ use amane::{
 pub enum Panel {
     Wifi,
     Bluetooth,
+    Notifications,
 }
 
 // which panel is open, only one at a time
@@ -37,6 +39,7 @@ pub fn view() -> LayerWindow {
     let content = match panels.open {
         Some(Panel::Wifi) => wifi::view(),
         Some(Panel::Bluetooth) => bluetooth::view(),
+        Some(Panel::Notifications) => notifications::view(),
         None => Column::new(Vec::new()),
     };
 
@@ -85,6 +88,7 @@ pub fn toggle(panel: Panel) {
     match panel {
         Panel::Wifi => Network::scan(),
         Panel::Bluetooth => Bluetooth::start_scan(),
+        Panel::Notifications => {}
     }
 
     Panels::write().open = Some(panel);

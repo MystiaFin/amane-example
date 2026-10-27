@@ -3,6 +3,8 @@ use amane::{
     Pointer, Rectangle, Service, Text, Urgency, Vertical, Weight, Widget, children,
 };
 
+use crate::panel::Panels;
+
 const WIDTH: f32 = 360.0;
 const CARD_HEIGHT: f32 = 64.0;
 const GAP: f32 = 8.0;
@@ -32,6 +34,9 @@ pub fn view() -> LayerWindow {
     let count = cards.len() as f32;
     let height = f32::max(count * (CARD_HEIGHT + GAP), 1.0);
 
+    // panels open in the same corner, the popups wait until they close
+    let panel_open = Panels::read().open.is_some();
+
     let margin = Margin {
         top: 8,
         right: 8,
@@ -47,12 +52,12 @@ pub fn view() -> LayerWindow {
         .margin(margin)
         .layer(Layer::Overlay)
         .namespace("notifications")
-        .visible(!cards.is_empty())
+        .visible(!cards.is_empty() && !panel_open)
         .child(Column::new(cards).gap(GAP))
 }
 
 // clicking runs the notification's default action, or dismisses it
-fn card(notification: &Notification) -> Rectangle {
+pub fn card(notification: &Notification) -> Rectangle {
     let id = notification.id();
 
     let border = match notification.urgency() {
