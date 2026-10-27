@@ -108,6 +108,8 @@ pub fn close() {
     // the next open starts with an empty search
     TextInput::set_text("launcher", "");
 
+    power::cancel();
+
     let mut launcher = Launcher::write();
 
     launcher.open = false;

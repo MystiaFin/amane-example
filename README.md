@@ -62,7 +62,7 @@ bindsym $mod+d exec amane ipc call launcher
 bindsym $mod+Alt+l exec amane ipc call lock
 ```
 
-Click the Linux button in the top left to open the start menu. Type to search, press Enter to open the first match, or press Escape to close it. The buttons on the left use `systemctl` for sleep and shut down, and `loginctl` to log out. In the bar, click the volume to mute it and scroll over it to change it.
+Click the Linux button in the top left to open the start menu. Type to search, press Enter to open the first match, or press Escape to close it. The buttons on the left use `systemctl` for sleep and shut down, and `loginctl` to log out. Log out and shut down turn red and ask "sure?" first, so they need a second click. In the bar, click the volume to mute it and scroll over it to change it.
 
 Click the network, `bt` or `notifs` label in the bar to open its panel, and click it again (or press Escape) to close it. In the wifi panel, click a network to join or leave it. New secured networks ask for their password first. In the bluetooth panel, click a device to pair, connect or disconnect it. Devices that need a pairing code have to be paired once with `bluetoothctl`.
 
