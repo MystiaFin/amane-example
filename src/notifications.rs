@@ -60,20 +60,21 @@ pub fn view() -> LayerWindow {
 pub fn card(notification: &Notification) -> Rectangle {
     let id = notification.id();
 
-    let border = match notification.urgency() {
-        Urgency::Critical => "#f38ba8",
-        _ => "#45475a",
+    // critical ones get a red title, so they stand out
+    let title_color = match notification.urgency() {
+        Urgency::Critical => Color::from("#f38ba8"),
+        _ => Color::from("#cdd6f4"),
     };
 
     let summary = Text::new(notification.summary())
         .size(14.0)
         .weight(Weight::SemiBold)
-        .color(Color::WHITE)
+        .color(title_color)
         .elide();
 
     let body = Text::new(notification.body())
         .size(13.0)
-        .color(Color::WHITE)
+        .color(Color::from("#a6adc8"))
         .elide();
 
     Rectangle::new()
@@ -81,7 +82,6 @@ pub fn card(notification: &Notification) -> Rectangle {
         .height(CARD_HEIGHT)
         .fill(Color::rgb(30, 30, 46))
         .radius(10.0)
-        .border(1.0, border)
         .padding(12.0)
         .cursor(Pointer)
         .on_click(move |_| Notifications::click(id))

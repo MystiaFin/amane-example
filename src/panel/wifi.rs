@@ -92,14 +92,14 @@ fn clicked(ssid: &str, active: bool, needs_password: bool) {
 fn password_box(ssid: &str) -> Column {
     let label = Text::new(format!("password for {ssid}"))
         .size(13.0)
-        .color(Color::WHITE);
+        .color(Color::from("#a6adc8"));
 
     let input = TextInput::new("wifi-password")
         .placeholder("password")
         .password()
         .focused()
         .size(14.0)
-        .color(Color::WHITE)
+        .color(Color::from("#cdd6f4"))
         .on_submit(submitted);
 
     let field = Rectangle::new()

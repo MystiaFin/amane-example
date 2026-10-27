@@ -20,12 +20,12 @@ pub fn view(monitor: &Monitor) -> Row {
 }
 
 fn button(workspace: &Workspace) -> Rectangle {
-    let fill = if workspace.focused() {
-        "#89b4fa"
+    let (fill, text) = if workspace.focused() {
+        ("#89b4fa", "#1e1e2e")
     } else if workspace.urgent() {
-        "#f38ba8"
+        ("#f38ba8", "#1e1e2e")
     } else {
-        "#313244"
+        ("#313244", "#cdd6f4")
     };
 
     let id = workspace.id();
@@ -40,5 +40,5 @@ fn button(workspace: &Workspace) -> Rectangle {
         .cursor(Pointer)
         .align_child(Center, Center)
         .on_click(move |_| Workspaces::focus(id))
-        .child(Text::new(label).size(13.0).color(Color::WHITE))
+        .child(Text::new(label).size(13.0).color(Color::from(text)))
 }

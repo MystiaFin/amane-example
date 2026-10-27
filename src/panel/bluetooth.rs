@@ -10,7 +10,9 @@ pub fn view() -> Column {
 
     // no adapter, or bluez isn't running
     if !bluetooth.available() {
-        let message = Text::new("no bluetooth adapter").size(14.0).color(Color::WHITE);
+        let message = Text::new("no bluetooth adapter")
+            .size(14.0)
+            .color(Color::from("#a6adc8"));
 
         return Column::new(children![message]);
     }
@@ -19,7 +21,9 @@ pub fn view() -> Column {
 
     let button = if powered { "turn off" } else { "turn on" };
 
-    let header = panel::header("Bluetooth", button, move |_| Bluetooth::set_powered(!powered));
+    let header = panel::header("Bluetooth", button, move |_| {
+        Bluetooth::set_powered(!powered)
+    });
 
     let mut rows: Vec<Box<dyn Widget>> = Vec::new();
 

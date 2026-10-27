@@ -11,6 +11,8 @@ It has:
 - notification popups
 - a lock screen
 
+The colors are [Catppuccin Mocha](https://catppuccin.com/palette/), written as hex right where they're used.
+
 ## Running it
 
 You need the `amane` CLI first, see [Amane's installation guide](https://github.com/MystiaFin/amane#installation).

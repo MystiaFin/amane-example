@@ -13,7 +13,10 @@ pub fn view(app: &DesktopApp) -> Rectangle {
         None => icon,
     };
 
-    let name = Text::new(app.name()).size(15.0).color(Color::WHITE).elide();
+    let name = Text::new(app.name())
+        .size(15.0)
+        .color(Color::from("#cdd6f4"))
+        .elide();
 
     Rectangle::new()
         .width(Parent)

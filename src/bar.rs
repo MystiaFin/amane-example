@@ -22,15 +22,11 @@ pub fn view(monitor: &Monitor) -> LayerWindow {
         .gap(12.0)
         .align(Center);
 
-    let sections = Row::new(children![
-        left,
-        clock::view(),
-        status::view(),
-    ])
-    .width(Parent)
-    .height(Parent)
-    .justify(SpaceBetween)
-    .align(Center);
+    let sections = Row::new(children![left, clock::view(), status::view()])
+        .width(Parent)
+        .height(Parent)
+        .justify(SpaceBetween)
+        .align(Center);
 
     // reserve keeps maximized windows from sliding under the bar
     LayerWindow::new()

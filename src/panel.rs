@@ -68,7 +68,6 @@ pub fn view() -> LayerWindow {
                 .height(Parent)
                 .fill("#1e1e2e")
                 .radius(12.0)
-                .border(1.0, "#45475a")
                 .padding(12.0)
                 .child(content),
         )
@@ -111,7 +110,7 @@ fn key_pressed(key: Key) {
 
 // a title on the left and one small button on the right
 pub fn header(title: &str, button: &str, on_click: impl Fn(Button) + 'static) -> Row {
-    let title = Text::new(title).size(16.0).color(Color::WHITE);
+    let title = Text::new(title).size(16.0).color(Color::from("#cdd6f4"));
 
     let button = Rectangle::new()
         .width(72.0)
@@ -121,7 +120,7 @@ pub fn header(title: &str, button: &str, on_click: impl Fn(Button) + 'static) ->
         .cursor(Pointer)
         .align_child(Center, Center)
         .on_click(on_click)
-        .child(Text::new(button).size(13.0).color(Color::WHITE));
+        .child(Text::new(button).size(13.0).color(Color::from("#cdd6f4")));
 
     Row::new(children![title, button])
         .width(Parent)
@@ -131,8 +130,8 @@ pub fn header(title: &str, button: &str, on_click: impl Fn(Button) + 'static) ->
 
 // one line in a panel list, with a name on the left and its state on the right
 pub fn item(name: &str, state: &str) -> Rectangle {
-    let name = Text::new(name).size(14.0).color(Color::WHITE);
-    let state = Text::new(state).size(12.0).color(Color::WHITE);
+    let name = Text::new(name).size(14.0).color(Color::from("#cdd6f4"));
+    let state = Text::new(state).size(12.0).color(Color::from("#a6adc8"));
 
     let line = Row::new(children![name, state])
         .width(Parent)

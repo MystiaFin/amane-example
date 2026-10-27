@@ -15,7 +15,9 @@ pub fn view() -> Column {
     }
 
     if cards.is_empty() {
-        let message = Text::new("nothing new").size(14.0).color(Color::WHITE);
+        let message = Text::new("nothing new")
+            .size(14.0)
+            .color(Color::from("#a6adc8"));
 
         cards.push(Box::new(message));
     }

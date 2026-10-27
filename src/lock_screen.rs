@@ -1,6 +1,6 @@
 use amane::{
-    Center, Color, Column, LayerWindow, Lock, Monitor, Parent, Rectangle, Service, Text,
-    TextInput, Weight, children,
+    Center, Color, Column, LayerWindow, Lock, Monitor, Parent, Rectangle, Service, Text, TextInput,
+    Weight, children,
 };
 
 use crate::clock::Clock;
@@ -21,16 +21,18 @@ pub fn view(_monitor: &Monitor) -> LayerWindow {
     let time = Text::new(&clock.time)
         .size(72.0)
         .weight(Weight::Bold)
-        .color(Color::WHITE);
+        .color(Color::from("#cdd6f4"));
 
-    let date = Text::new(&clock.date).size(18.0).color(Color::WHITE);
+    let date = Text::new(&clock.date)
+        .size(18.0)
+        .color(Color::from("#a6adc8"));
 
     let password = TextInput::new("password")
         .placeholder("password")
         .password()
         .focused()
         .size(16.0)
-        .color(Color::WHITE)
+        .color(Color::from("#cdd6f4"))
         .on_submit(submitted);
 
     let password_box = Rectangle::new()
@@ -45,7 +47,7 @@ pub fn view(_monitor: &Monitor) -> LayerWindow {
         time,
         date,
         password_box,
-        Text::new(status).size(14.0).color(Color::WHITE),
+        Text::new(status).size(14.0).color(Color::from("#a6adc8")),
     ])
     .gap(16.0)
     .align(Center);

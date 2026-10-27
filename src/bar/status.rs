@@ -96,7 +96,10 @@ fn battery() -> Rectangle {
 
 // fixed widths, so the bar doesn't jump around when a label changes
 fn button(label: String, width: f32) -> Rectangle {
-    let text = Text::new(label).size(14.0).color(Color::WHITE).elide();
+    let text = Text::new(label)
+        .size(14.0)
+        .color(Color::from("#cdd6f4"))
+        .elide();
 
     Rectangle::new()
         .width(width)

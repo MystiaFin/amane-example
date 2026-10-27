@@ -32,7 +32,7 @@ pub fn view() -> LayerWindow {
     let search = TextInput::new("launcher")
         .placeholder("search apps")
         .size(16.0)
-        .color(Color::WHITE)
+        .color(Color::from("#cdd6f4"))
         .focused()
         .on_change(|text| Launcher::write().query = text)
         .on_submit(|_| launch_first_match());
@@ -67,7 +67,6 @@ pub fn view() -> LayerWindow {
                 .height(Parent)
                 .fill("#1e1e2e")
                 .radius(12.0)
-                .border(1.0, "#45475a")
                 .padding(12.0)
                 .child(content),
         )

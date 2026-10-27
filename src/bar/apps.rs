@@ -11,5 +11,5 @@ pub fn view() -> Rectangle {
         .cursor(Pointer)
         .align_child(Center, Center)
         .on_click(|_| launcher::toggle())
-        .child(Text::new("apps").size(13.0).color(Color::WHITE))
+        .child(Text::new("apps").size(13.0).color(Color::from("#1e1e2e")))
 }
